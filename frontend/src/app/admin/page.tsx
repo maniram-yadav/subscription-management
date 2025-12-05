@@ -56,7 +56,7 @@ export default function AdminPage() {
     return res;
   };
 
-  const handleMyProfile = async (payload: any) => {
+  const handleMyProfile = async () => {
     router.push('/profile');
   };
 

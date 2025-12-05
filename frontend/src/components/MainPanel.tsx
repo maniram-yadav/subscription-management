@@ -6,7 +6,7 @@ import UsersTable from './UsersTable';
 import SubscriptionsList from './SubscriptionsList';
 import SubscriptionForm from './SubscriptionForm';
 
-type MenuKey = 'my-profile' | 'create-user' | 'view-users' | 'update-user' | 'subscriptions';
+type MenuKey = ''| 'my-profile' | 'create-user' | 'view-users' | 'update-user' | 'subscriptions';
 
 export const MainPanel = ({
   active,

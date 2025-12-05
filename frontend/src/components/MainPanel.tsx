@@ -5,6 +5,7 @@ import ProfileCard from './ProfileCard';
 import UsersTable from './UsersTable';
 import SubscriptionsList from './SubscriptionsList';
 import SubscriptionForm from './SubscriptionForm';
+import { useEffect, useState } from 'react';
 
 type MenuKey = ''| 'my-profile' | 'create-user' | 'view-users' | 'update-user' | 'subscriptions';
 
@@ -28,22 +29,17 @@ export const MainPanel = ({
   onUpdate: (id: number, payload: any) => Promise<void>;
   onSelectUser: (id: number) => void;
   selectedUser?: any | null;
-  onMyProfile: (payload: any) => Promise<void>;
+  onMyProfile: () => Promise<void>;
   subscriptions?: any[];
   onCreateSubscription?: (payload: any) => Promise<void>;
   onUpdateSubscription?: (id: number, payload: any) => Promise<void>;
   onDeleteSubscription?: (id: number) => Promise<void>;
   selectedSubscription?: any | null;
 }) => {
+    let [showForm,setShowForm] =useState<boolean>(false);
   if (active === 'my-profile') {
-    // return (
-    //   <div className="p-6">
-    //     {
             onMyProfile();
-    //     }
-    //   </div>
-    // );
-  }
+ }
 
   if (active === 'create-user') {
     return <CreateUserForm onCreate={onCreate} />;
@@ -74,18 +70,9 @@ export const MainPanel = ({
   if (active === 'subscriptions') {
     return (
       <div className="p-6">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Subscription Form */}
-          <div className="lg:col-span-1">
-            {onCreateSubscription && onUpdateSubscription && (
-              <SubscriptionForm
-                onSubmit={selectedSubscription ? (data) => onUpdateSubscription(selectedSubscription.id, data) : onCreateSubscription}
-                initialData={selectedSubscription}
-              />
-            )}
-          </div>
+        <div className="grid grid-cols-1 lg:grid-cols-1 gap-6">
 
-          {/* Subscriptions List */}
+             {/* Subscriptions List */}
           <div className="lg:col-span-2">
             <h2 className="text-2xl font-semibold mb-4">My Subscriptions</h2>
             {subscriptions && onDeleteSubscription && (
@@ -97,7 +84,24 @@ export const MainPanel = ({
                 onDelete={onDeleteSubscription}
               />
             )}
+            <div className="mt-2">
+              <button className="w-auto px-4 py-2 bg-green-600 text-white rounded" onClick={()=>{setShowForm(!showForm)}}>
+                Add Subscription
+              </button>
+            </div>
           </div>
+
+          {/* Subscription Form */}
+          <div className="lg:col-span-1">
+            {showForm && onCreateSubscription && onUpdateSubscription && (
+              <SubscriptionForm
+                onSubmit={selectedSubscription ? (data) => onUpdateSubscription(selectedSubscription.id, data) : onCreateSubscription}
+                initialData={selectedSubscription}
+              />
+            )}
+          </div>
+
+         
         </div>
       </div>
     );
@@ -105,6 +109,7 @@ export const MainPanel = ({
 
   return null;
 };
+
 
 function CreateUserForm({ onCreate }: { onCreate: (p: any) => Promise<void> }) {
   const [form, setForm] = React.useState({
